@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Present Student</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        {% include "_header.html" %}
+        {% include "_flash_messages.html" %}
+        <div class="enter-page add-page">
+            <h1>Present Student</h1>
+            {% if submitted %}
+                <div class="userCard">
+                    <p><strong>Name:</strong> {{ name }}</p>
+                    <p><strong>Course:</strong> {{ course }}</p>
+                </div>
+            {% else %}
+                <div class="userCard">
+                    <form method="POST">
+                        <label for="name">Student name:</label>
+                        <input id="name" name="name" type="text" value="{{ name }}" required>
+
+                        <label for="course">Course:</label>
+                        <input id="course" name="course" type="text" value="{{ course }}" required>
+
+                        <button type="submit">Present Student</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </body>
+</html>

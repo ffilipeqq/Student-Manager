@@ -1,0 +1,224 @@
+from flask import Flask, flash, redirect, render_template, request, session, url_for
+
+from pytools.flaskTools import authenticate_user, is_admin, is_logged_in
+from pytools.sqlTools import sql_commit, sql_fetch
+from pytools.validationTools import clean_text, validate_login, validate_student
+
+app = Flask(__name__)
+app.secret_key = "development-key"
+
+STUDENTS_TABLE = "students"
+
+
+@app.route("/students")
+def students():
+    if not is_logged_in():
+        return redirect(url_for("login"))
+
+    students = sql_fetch(
+        f"SELECT id, name, email, course FROM {STUDENTS_TABLE}"
+    ) or []
+    return render_template("students.html", students=students)
+
+
+@app.route("/students/add", methods=["GET", "POST"])
+def add_student():
+    if not is_admin():
+        return redirect(url_for("login"))
+
+    name = ""
+    email = ""
+    course = ""
+
+    if request.method == "POST":
+        name = clean_text(request.form.get("name", ""))
+        email = clean_text(request.form.get("email", ""))
+        course = clean_text(request.form.get("course", ""))
+        errors = validate_student(name, email, course)
+
+        if not errors:
+            saved = sql_commit(
+                f"INSERT INTO {STUDENTS_TABLE} (name, email, course) "
+                "VALUES (%s, %s, %s)",
+                (name, email, course),
+            )
+            if not saved:
+                return render_template(
+                    "add_student.html",
+                    name=name,
+                    email=email,
+                    course=course,
+                )
+
+            flash("Student added successfully.", "success")
+            return redirect(url_for("students"))
+
+        for error in errors:
+            flash(error, "error")
+
+    return render_template(
+        "add_student.html",
+        name=name,
+        email=email,
+        course=course,
+    )
+
+
+@app.route("/students/edit/<int:student_id>", methods=["GET", "POST"])
+def edit_student(student_id):
+    if not is_admin():
+        return redirect(url_for("login"))
+
+    name = ""
+    email = ""
+    course = ""
+
+    if request.method == "POST":
+        name = clean_text(request.form.get("name", ""))
+        email = clean_text(request.form.get("email", ""))
+        course = clean_text(request.form.get("course", ""))
+        errors = validate_student(name, email, course)
+
+        if not errors:
+            saved = sql_commit(
+                f"UPDATE {STUDENTS_TABLE} SET name = %s, email = %s, "
+                "course = %s WHERE id = %s",
+                (name, email, course, student_id),
+            )
+            if not saved:
+                return render_template(
+                    "edit_student.html",
+                    student={
+                        "id": student_id,
+                        "name": name,
+                        "email": email,
+                        "course": course,
+                    },
+                )
+
+            flash("Student updated successfully.", "success")
+            return redirect(url_for("students"))
+
+        for error in errors:
+            flash(error, "error")
+
+    student = sql_fetch(
+        f"SELECT id, name, email, course FROM {STUDENTS_TABLE} WHERE id = %s",
+        (student_id,),
+        "one",
+    )
+    if student is None:
+        flash("Student not found.", "error")
+        return redirect(url_for("students"))
+
+    if request.method == "POST":
+        student.update(name=name, email=email, course=course)
+
+    return render_template("edit_student.html", student=student)
+
+
+@app.route("/students/delete/<int:student_id>", methods=["POST"])
+def delete_student(student_id):
+    if not is_admin():
+        return redirect(url_for("login"))
+
+    deleted = sql_commit(
+        f"DELETE FROM {STUDENTS_TABLE} WHERE id = %s",
+        (student_id,),
+    )
+    if not deleted:
+        return redirect(url_for("students"))
+
+    flash("Student deleted successfully.", "success")
+    return redirect(url_for("students"))
+
+
+@app.route("/present", methods=["GET", "POST"])
+def present():
+    if not is_logged_in():
+        return redirect(url_for("login"))
+
+    name = ""
+    course = ""
+    if request.method == "POST":
+        name = clean_text(request.form.get("name", ""))
+        course = clean_text(request.form.get("course", ""))
+        errors = validate_student(name, "student@example.com", course)
+
+        if not errors:
+            return render_template(
+                "present.html",
+                name=name,
+                course=course,
+                submitted=True,
+            )
+
+        for error in errors:
+            flash(error, "error")
+
+    return render_template(
+        "present.html",
+        name=name,
+        course=course,
+        submitted=False,
+    )
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+        errors = validate_login(username, password)
+
+        if errors:
+            for error in errors:
+                flash(error, "error")
+            return render_template("login.html")
+
+        role = authenticate_user(username, password)
+        if role:
+            session["username"] = username
+            session["role"] = role
+            return redirect(url_for("dashboard"))
+
+        flash("Invalid username or password.", "error")
+
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+
+@app.route("/dashboard")
+def dashboard():
+    rows = sql_fetch("""SELECT course, COUNT(*) AS total
+                FROM students
+                GROUP BY course
+                ORDER BY total DESC""", fetch_type="all")
+
+    course_counts = [
+        {"course": row["course"], "total": row["total"]}
+        for row in rows
+    ]
+
+    total_students = sum(
+        row["total"] for row in course_counts
+    )
+
+    max_count = max(
+        (row["total"] for row in course_counts), 
+        default = 1
+    )
+    
+    return render_template("dashboard.html",
+                           course_counts=course_counts,
+                           total_students=total_students,
+                           max_count=max_count,
+                           username = session["username"])
+
+if __name__ == "__main__":
+    app.run(debug=True)

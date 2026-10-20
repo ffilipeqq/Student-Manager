@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    <div class="flash-messages">
+        {%for category, message in messages%}
+            <div class="notice notice--{{category}}" role="{{ 'alert' if category == 'error' else 'status' }}">
+                {%if category == "success"%}
+                    <span aria-hidden="true">✓</span>
+                {%elif category == "error"%}
+                    <span aria-hidden="true">✕</span>
+                {%endif%}
+                {{message}}
+            </div>
+        {%endfor%}
+    </div>
+{%endwith%}

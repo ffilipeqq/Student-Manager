@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title>Add Student</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        {% include "_header.html" %}
+        {% include "_flash_messages.html" %}
+        <div class="enter-page add-page">
+            <h1>Add Student</h1>
+            <div class="userCard">
+                <form method="POST">
+                    <label for="name">Student name:</label>
+                    <input id="name" name="name" type="text" value="{{ name }}" required>
+
+                    <label for="email">Email:</label>
+                    <input id="email" name="email" type="email" value="{{ email }}" required>
+
+                    <label for="course">Course:</label>
+                    <input id="course" name="course" type="text" value="{{ course }}" required>
+
+                    <button type="submit">Add Student</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

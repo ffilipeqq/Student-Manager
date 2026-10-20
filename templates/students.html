@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>Students</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        {% include "_header.html" %}
+        {% include "_flash_messages.html" %}
+        <h1>Students</h1>
+
+        {% if students %}
+        <table>
+            <thead>
+                <tr>
+                    <th>  </th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    {% if session.get("role") == "admin" %}
+                        <th>Actions</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td><img src="{{ url_for('static', filename='images/student-icon.svg') }}" alt="" class="student-icon"></td>
+                    <td>{{ student["id"] }}</td>
+                    <td>{{ student["name"] }}</td>
+                    <td>{{ student["email"] }}</td>
+                    <td>{{ student["course"] }}</td>
+                    {% if session.get("role") == "admin" %}
+                        <td class="actions-cell">
+                            <div class="action-buttons">
+                            <a href="{{ url_for('edit_student', student_id=student['id']) }}">Edit</a>
+                            <form method="POST" action="{{ url_for('delete_student', student_id=student['id']) }}">
+                                <button class="delete-link" type="submit">Delete</button>
+                            </form>
+                            </div>
+                        </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No students found.</p>
+        {% endif %}
+    </body>
+</html>

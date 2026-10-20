@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        {% include "_header.html" %}
+        {% include "_flash_messages.html" %}
+        <h1>Dashboard</h1>
+
+
+        <div class="dataCard-small dashboard-welcome">
+            <h1>Welcome, {{ username }}</h1>
+        </div>
+        <section class="summary-cards">
+            <div class="dataCard">
+                <h2>Courses</h2>
+                <h1>{{ course_counts | length }}</h1>
+            </div>
+            <div class="dataCard">
+                <h2>Total students</h2>
+                <h1>{{ total_students }}</h1>
+            </div>
+        </section>
+
+        <section class="chart-section" aria-labelledby="chart-title">
+            <h2 id="chart-title">Students by Course</h2>
+
+            <div class="chart-rows">
+                {% for row in course_counts %}
+                    <div class="chart-row">
+                        <span class="course-name">
+                            {{ row.course or "Unknown course" }}
+                        </span>
+
+                        <div
+                            class="chart-track"
+                            role="progressbar"
+                            aria-label="{{ row.course or 'Unknown course' }}"
+                            aria-valuenow="{{ row.total }}"
+                            aria-valuemin="0"
+                            aria-valuemax="{{ max_count }}"
+                        >
+                            <div
+                                class="chart-fill"
+                                style="width: {{ (row.total / max_count * 100) | round(1) }}%;"
+                            ></div>
+                        </div>
+
+                        <strong class="chart-value">
+                            {{ row.total }}
+                        </strong>
+                    </div>
+                {% else %}
+                    <p>No student data available.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+    
+    </body>
+</html>
