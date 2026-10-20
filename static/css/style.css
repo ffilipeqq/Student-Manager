@@ -331,7 +331,7 @@ main {
     width: 0;
     height: 100%;
     border-radius: inherit;
-    background-color: green;
+    background-color: var(--brand-color);
     transition: width 0.3s ease;
 }
 
