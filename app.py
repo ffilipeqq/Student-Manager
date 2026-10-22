@@ -15,7 +15,7 @@ app.secret_key = "development-key"
 STUDENTS_TABLE = "students"
 EXPORT_DIR = Path(app.instance_path) / "exports"
 EXPORT_FILE = EXPORT_DIR / "students.csv"
-LOG_FILE = Path("instance/log/export_log.txt")
+LOG_FILE = Path("instance/log/export_log.log")
 
 def create_export(students, filename):
     EXPORT_DIR.mkdir(
