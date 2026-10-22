@@ -44,9 +44,27 @@
                 {% endfor %}
             </tbody>
         </table>
-        <form action="{{url_for('export_students')}}" method="post">
-            <button class="export-link" type="submit">Export to CSV</button>
-        </form>
+        <section class="export-panel" aria-labelledby="export-title">
+            <h2 id="export-title">Export students</h2>
+            <div class="export-options">
+                <form action="{{ url_for('export_students') }}" method="post">
+                    <button class="export-link" type="submit">Export all students</button>
+                </form>
+
+                <form class="course-export-form" action="{{ url_for('export_students_by_course') }}" method="post">
+                    <label for="course">Export by course</label>
+                    <div class="course-export-controls">
+                        <select id="course" name="course" required>
+                            <option value="" selected disabled>Choose a course</option>
+                            {% for course in courses %}
+                                <option value="{{ course['course'] }}">{{ course['course'] }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="export-link" type="submit">Export course</button>
+                    </div>
+                </form>
+            </div>
+        </section>
         {% else %}
         <p>No students found.</p>
         {% endif %}

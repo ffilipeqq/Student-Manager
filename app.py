@@ -14,6 +14,28 @@ STUDENTS_TABLE = "students"
 EXPORT_DIR = Path(app.instance_path) / "exports"
 EXPORT_FILE = EXPORT_DIR / "students.csv"
 
+def create_export(students, filename):
+    EXPORT_DIR.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    export_file = EXPORT_DIR / filename
+    with export_file.open(
+        "w",
+        newline="",
+        encoding="utf-8-sig"
+    ) as file:
+        writer = csv.DictWriter(
+            file,
+            fieldnames=["id", "name", "course"]
+        )
+        writer.writeheader()
+        writer.writerows(students)
+
+    return export_file
+
+
 @app.post("/students/export")
 def export_students():
     if not is_logged_in():
@@ -23,26 +45,7 @@ def export_students():
                 SELECT id, name, course
                 FROM students
                 ORDER BY id""", fetch_type="all") or []
-                
-
-    EXPORT_DIR.mkdir(
-        parents = True,
-        exist_ok = True
-    )
-
-    with EXPORT_FILE.open(
-        "w",  
-        newline="", 
-        encoding="utf-8-sig" 
-    ) as file:
-        writer = csv.DictWriter(
-            file,
-            fieldnames=["id", "name", "course"]
-        )
-
-        writer.writeheader()
-
-        writer.writerows(students)
+    create_export(students, "students.csv")
 
     return send_file(
         EXPORT_FILE,
@@ -50,6 +53,39 @@ def export_students():
         download_name="students.csv",
         mimetype="text/csv"
     )
+
+
+@app.post("/students/export/course")
+def export_students_by_course():
+    if not is_logged_in():
+        return redirect(url_for("login"))
+
+    course = clean_text(request.form.get("course", ""))
+    if not course:
+        flash("Please choose a course to export.", "error")
+        return redirect(url_for("students"))
+
+    students = sql_fetch(
+        f"""SELECT id, name, course
+            FROM {STUDENTS_TABLE}
+            WHERE course = %s
+            ORDER BY id""",
+        (course,),
+        fetch_type="all",
+    ) or []
+
+    if not students:
+        flash("No students found for that course.", "error")
+        return redirect(url_for("students"))
+
+    export_file = create_export(students, "students-by-course.csv")
+    return send_file(
+        export_file,
+        as_attachment=True,
+        download_name="students-by-course.csv",
+        mimetype="text/csv"
+    )
+
 
 @app.get("/students/export/preview")
 def preview_export():
@@ -94,7 +130,14 @@ def students():
     students = sql_fetch(
         f"SELECT id, name, email, course FROM {STUDENTS_TABLE}"
     ) or []
-    return render_template("students.html", students=students)
+    courses = sql_fetch(
+        f"""SELECT DISTINCT course
+            FROM {STUDENTS_TABLE}
+            WHERE course IS NOT NULL AND course <> ''
+            ORDER BY course""",
+        fetch_type="all",
+    ) or []
+    return render_template("students.html", students=students, courses=courses)
 
 
 @app.route("/students/add", methods=["GET", "POST"])
