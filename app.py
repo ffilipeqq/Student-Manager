@@ -1,5 +1,7 @@
 from flask import Flask, flash, redirect, render_template, request, session, url_for, send_file
 
+from datetime import datetime
+
 from pathlib import Path
 import csv
 
@@ -13,6 +15,7 @@ app.secret_key = "development-key"
 STUDENTS_TABLE = "students"
 EXPORT_DIR = Path(app.instance_path) / "exports"
 EXPORT_FILE = EXPORT_DIR / "students.csv"
+LOG_FILE = Path("instance/log/export_log.txt")
 
 def create_export(students, filename):
     EXPORT_DIR.mkdir(
@@ -46,6 +49,12 @@ def export_students():
                 FROM students
                 ORDER BY id""", fetch_type="all") or []
     create_export(students, "students.csv")
+
+    with LOG_FILE.open(
+        "a",
+        encoding="utf-8"
+    ) as file:
+        file.write(f"{datetime.now()} | Export generated.\n")
 
     return send_file(
         EXPORT_FILE,
@@ -89,6 +98,8 @@ def export_students_by_course():
 
 @app.get("/students/export/preview")
 def preview_export():
+    if not is_logged_in():
+        return redirect(url_for("login"))
 
     if not EXPORT_FILE.is_file():
         return "No export file found.", 404
@@ -108,6 +119,8 @@ def preview_export():
 
 @app.post("/students/export/delete")
 def delete_export():
+    if not is_logged_in():
+        return redirect(url_for("login"))
 
     try:
         EXPORT_FILE.unlink(missing_ok=True)
