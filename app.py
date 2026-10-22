@@ -1,4 +1,7 @@
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import Flask, flash, redirect, render_template, request, session, url_for, send_file
+
+from pathlib import Path
+import csv
 
 from pytools.flaskTools import authenticate_user, is_admin, is_logged_in
 from pytools.sqlTools import sql_commit, sql_fetch
@@ -8,7 +11,64 @@ app = Flask(__name__)
 app.secret_key = "development-key"
 
 STUDENTS_TABLE = "students"
+EXPORT_DIR = Path(app.instance_path) / "exports"
+EXPORT_FILE = EXPORT_DIR / "students.csv"
 
+@app.post("/students/export")
+def export_students():
+    if not is_logged_in():
+        return redirect(url_for("login"))
+
+    students = sql_fetch("""
+                SELECT id, name, course
+                FROM students
+                ORDER BY id""", fetch_type="all") or []
+                
+
+    EXPORT_DIR.mkdir(
+        parents = True,
+        exist_ok = True
+    )
+
+    with EXPORT_FILE.open(
+        "w",  
+        newline="", 
+        encoding="utf-8-sig" 
+    ) as file:
+        writer = csv.DictWriter(
+            file,
+            fieldnames=["id", "name", "course"]
+        )
+
+        writer.writeheader()
+
+        writer.writerows(students)
+
+    return send_file(
+        EXPORT_FILE,
+        as_attachment=True,
+        download_name="students.csv",
+        mimetype="text/csv"
+    )
+
+@app.get("/students/export/preview")
+def preview_export():
+
+    if not EXPORT_FILE.is_file():
+        return "No export file found.", 404
+
+    with EXPORT_FILE.open(
+        'r',
+        newline="",
+        encoding="utf-8-sig"
+    ) as file:
+        reader = csv.DictReader(file)
+        rows = list(reader)
+
+    return render_template(
+        "export_preview.html",
+        rows=rows
+    )
 
 @app.route("/students")
 def students():
@@ -195,6 +255,9 @@ def logout():
 
 @app.route("/dashboard")
 def dashboard():
+    if not is_logged_in():
+        return redirect(url_for("login"))
+
     rows = sql_fetch("""SELECT course, COUNT(*) AS total
                 FROM students
                 GROUP BY course

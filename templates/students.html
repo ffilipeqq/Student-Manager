@@ -44,6 +44,9 @@
                 {% endfor %}
             </tbody>
         </table>
+        <form action="{{url_for('export_students')}}" method="post">
+            <button class="export-link" type="submit">Export to CSV</button>
+        </form>
         {% else %}
         <p>No students found.</p>
         {% endif %}

@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>CSV Preview</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        {% include "_header.html" %}
+        {% include "_flash_messages.html" %}
+        <h1>Student CSV Preview</h1>
+
+        {% if rows %}
+        <table border="1">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Course</th>
+            </tr>
+            </thead>
+            <tbody>
+
+                {% for row in rows %}
+                    <tr>
+                        <td>{{ row['id'] }}</td>
+                        <td>{{ row['name'] }}</td>
+                        <td>{{ row['course'] }}</td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        {% else %}
+            <p>No records found in the CSV.</p>
+        {% endif %}
+    </body>
+</html>

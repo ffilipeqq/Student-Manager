@@ -466,7 +466,7 @@ tbody td {
     padding: 7px 2px 7px 2px;
 }
 
-.delete-link {
+.delete-link, .export-link {
     padding: 0;
     border: 0;
     background: none;
@@ -502,7 +502,7 @@ table a:hover {
     margin: 0;
 }
 
-table .delete-link {
+table .delete-link, .export-link {
     padding: 5px 9px;
     border-radius: 5px;
     background-color: #dc2626;
@@ -510,6 +510,10 @@ table .delete-link {
     font-size: 15px;
     text-decoration: none;
     transition: background-color 0.2s ease;
+}
+
+.export-link {
+    background-color: black;
 }
 
 table .delete-link:hover {
