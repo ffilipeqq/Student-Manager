@@ -122,7 +122,7 @@ nav a.active {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     opacity: 1;
     visibility: visible;
-    animation: noticeFadeOut 4s ease forwards;
+    animation: noticeFadeInOut 4s ease forwards;
 }
 
 .notice--success {
@@ -143,8 +143,18 @@ nav a.active {
 
 }
 
-@keyframes noticeFadeOut {
-    0%, 75% {
+@keyframes noticeFadeInOut {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    5% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    75% {
         opacity: 1;
         visibility: visible;
     }

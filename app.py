@@ -70,6 +70,22 @@ def preview_export():
         rows=rows
     )
 
+@app.post("/students/export/delete")
+def delete_export():
+
+    try:
+        EXPORT_FILE.unlink(missing_ok=True)
+    except OSError:
+        app.logger.exception(
+            "Could not delete CSV export"
+        )
+
+        return "Could not delete the export.", 500
+
+    flash("Export deleted successfully.", "success")
+    return redirect(url_for("students"))
+    
+
 @app.route("/students")
 def students():
     if not is_logged_in():

@@ -32,5 +32,9 @@
         {% else %}
             <p>No records found in the CSV.</p>
         {% endif %}
+
+        <form method="POST" action="{{ url_for('delete_export') }}">
+            <button type="submit" class="export-link" style="background-color: #b91c1c">Delete export</button>
+        </form>
     </body>
 </html>
