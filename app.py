@@ -7,7 +7,13 @@ import csv
 
 from pytools.flaskTools import authenticate_user, is_admin, is_logged_in
 from pytools.sqlTools import sql_commit, sql_fetch, os
-from pytools.validationTools import clean_text, validate_login, validate_student
+from pytools.validationTools import (
+    clean_text,
+    validate_login,
+    validate_student,
+    validate_user,
+)
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 app.secret_key = os.environ["FLASK_SECRET_KEY"]
@@ -219,6 +225,46 @@ def add_student():
         name=name,
         email=email,
         course=course,
+    )
+
+
+@app.route("/users/add", methods=["GET", "POST"])
+def add_user():
+    if not is_admin():
+        return redirect(url_for("login"))
+
+    username = ""
+    role = "user"
+
+    if request.method == "POST":
+        username = clean_text(request.form.get("username", ""))
+        password = request.form.get("password", "")
+        confirm_password = request.form.get("confirm_password", "")
+        role = request.form.get("role", "user")
+        errors = validate_user(username, password, confirm_password, role)
+
+        if not errors:
+            saved = sql_commit(
+                "INSERT INTO users (username, password, role) VALUES (%s, %s, %s)",
+                (username, generate_password_hash(password), role),
+            )
+            if not saved:
+                return render_template(
+                    "add_user.html",
+                    username=username,
+                    role=role,
+                )
+
+            flash("User added successfully.", "success")
+            return redirect(url_for("dashboard"))
+
+        for error in errors:
+            flash(error, "error")
+
+    return render_template(
+        "add_user.html",
+        username=username,
+        role=role,
     )
 
 

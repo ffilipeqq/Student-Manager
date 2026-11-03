@@ -6,6 +6,11 @@ This was built using **Python**, **Flask**, **Git**, AND **MySQL**, as a small s
 
 Includes a **login/logout system** using **sessions** and accounts - Features a **dashboard** page, **students list** page, **student editing**, and **student adding**.
 
+User accounts are read from the MySQL `users` table with the columns `id`,
+`username`, `password`, and `role`. New passwords are stored as Werkzeug
+hashes, never as plain text. The existing admin account keeps its current
+password and is upgraded to a hash the first time it logs in.
+
 ## Requirements
 - Python 3.14
 - A running MySQL server
@@ -47,6 +52,13 @@ $env:FLASK_SECRET_KEY = $packagingKey
 .\.venv\Scripts\python.exe -m flask --app app run
 ```
 
+## Login
+- Username: `admin`
+- Password: `tlevel`
+
+After logging in as an admin, use **Add User** in the navigation to create
+additional accounts. The `id` column is generated automatically by MySQL.
+
 
 
 ## Important
@@ -56,7 +68,10 @@ $env:FLASK_SECRET_KEY = $packagingKey
 ## Screenshots
 
 ### Dashboard
-![Student Management System dashboard](projectimg/dashboard-overview.png)
+![Student Management System dashboard](projectimg/dashboard_overview.png)
 
-### Students
-![Student Management System students page](projectimg/Students.png)
+### Students table
+![Student Management System students table](projectimg/students_table.png)
+
+### Add user
+![Student Management System add user page](projectimg/add_user.png)

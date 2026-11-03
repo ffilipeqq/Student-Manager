@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>Add User</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        {% include "_header.html" %}
+        {% include "_flash_messages.html" %}
+        <div class="enter-page add-page">
+            <h1>Add User</h1>
+            <div class="userCard">
+                <form method="POST">
+                    <label for="username">Username:</label>
+                    <input id="username" name="username" type="text" value="{{ username }}" required>
+
+                    <label for="password">Password:</label>
+                    <input id="password" name="password" type="password" required>
+
+                    <label for="confirm_password">Confirm password:</label>
+                    <input id="confirm_password" name="confirm_password" type="password" required>
+
+                    <label for="role">Role:</label>
+                    <select id="role" name="role">
+                        <option value="user" {% if role == "user" %}selected{% endif %}>User</option>
+                        <option value="admin" {% if role == "admin" %}selected{% endif %}>Admin</option>
+                    </select>
+
+                    <button type="submit">Add User</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

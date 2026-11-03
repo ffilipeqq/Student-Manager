@@ -21,6 +21,12 @@
             >
                 Add Student
             </a>
+            <a
+                href="{{ url_for('add_user') }}"
+                class="{% if request.endpoint == 'add_user' %}active{% endif %}"
+            >
+                Add User
+            </a>
         {% endif %}
         <a href="{{ url_for('logout') }}">Logout</a>
     </nav>

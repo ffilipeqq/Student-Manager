@@ -17,6 +17,20 @@ def validate_login(username, password):
     return errors
 
 
+def validate_user(username, password, confirm_password, role):
+    errors = validate_login(username, password)
+
+    if not confirm_password:
+        errors.append("Please confirm the password.")
+    elif password != confirm_password:
+        errors.append("Passwords do not match.")
+
+    if role not in ("user", "admin"):
+        errors.append("Choose a valid role.")
+
+    return errors
+
+
 def validate_student(name, email, course):
     errors = []
 
