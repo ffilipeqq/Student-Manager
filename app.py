@@ -133,6 +133,31 @@ def delete_export():
 
     flash("Export deleted successfully.", "success")
     return redirect(url_for("students"))
+
+
+@app.route("/compare")
+def compare():
+    if not is_logged_in():
+        return redirect(url_for("login"))
+
+    sql_records = 0, csv_records = 0
+
+    sql_records = sql_fetch(
+            f"""SELECT COUNT(*_)
+                AS sql_records
+                FROM {STUDENTS_TABLE}""",
+            fetch_type="all",
+        ) or []
+
+    with EXPORT_FILE.open(
+            "r",
+            newline="",
+            encoding="utf-8-sig"
+        ) as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            csv_records += 1
     
 
 @app.route("/students")
