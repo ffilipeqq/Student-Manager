@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+pytools/flaskTools.py
+instance/
