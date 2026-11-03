@@ -79,7 +79,7 @@ Set `DB_USER` and `DB_PASSWORD` to a MySQL account that can access
 `college_db`. The application creates user password hashes when accounts are
 added through **Add User**.
 
-## Login
+### Login
 - Username: `admin`
 - Password: `tlevel`
 
@@ -88,8 +88,7 @@ additional accounts. The `id` column is generated automatically by MySQL.
 
 
 
-## Important
-- The MySQL database, tables, and local data are not included in this repository.
+### Important
 - This project was created for practising Flask and front-end design skills; it is not production-ready and should not be considered secure.
 
 ## Screenshots
