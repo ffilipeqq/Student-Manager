@@ -1,4 +1,4 @@
-## Student Management System.
+# Student Management System.
 
 Used to manage students in a **SQL** database, and **display data** about courses onto a **dynamic** website.
 
@@ -24,7 +24,7 @@ password and is upgraded to a hash the first time it logs in.
 4. Create the MySQL database and required tables.
 5. Set the environment variables referring to **Powershell Commands**, then run the app with `python app.py`.
 
-## Powershell Commands
+### Powershell Commands
 ```powershell
 py -m venv .venv
 ```
@@ -52,7 +52,7 @@ $env:FLASK_SECRET_KEY = $packagingKey
 .\.venv\Scripts\python.exe -m flask --app app run
 ```
 
-## MySQL configuration
+### MySQL configuration
 Create the database and tables below in MySQL before starting the application.
 The `users.id` and `students.id` columns increment automatically.
 
