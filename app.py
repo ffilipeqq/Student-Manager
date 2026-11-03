@@ -140,7 +140,8 @@ def compare():
     if not is_logged_in():
         return redirect(url_for("login"))
 
-    sql_records = 0, csv_records = 0
+    sql_records = 0
+    csv_records = 0
 
     sql_records = sql_fetch(
             f"""SELECT COUNT(*_)
