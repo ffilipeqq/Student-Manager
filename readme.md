@@ -21,3 +21,4 @@ Includes a **login/logout system** using **sessions** and accounts - Features a 
 
 ## Important
 - The MySQL database, tables, and local data are not included in this repository.
+- This project was created for practising Flask and front-end design skills; it is not production-ready and should not be considered secure.
