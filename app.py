@@ -6,11 +6,11 @@ from pathlib import Path
 import csv
 
 from pytools.flaskTools import authenticate_user, is_admin, is_logged_in
-from pytools.sqlTools import sql_commit, sql_fetch
+from pytools.sqlTools import sql_commit, sql_fetch, os
 from pytools.validationTools import clean_text, validate_login, validate_student
 
 app = Flask(__name__)
-app.secret_key = "development-key"
+app.secret_key = os.environ["FLASK_SECRET_KEY"]
 
 STUDENTS_TABLE = "students"
 EXPORT_DIR = Path(app.instance_path) / "exports"

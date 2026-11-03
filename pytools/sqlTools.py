@@ -1,13 +1,14 @@
 import pymysql
 from flask import flash
-
+import os
 
 def get_connection():
     return pymysql.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="college_db",
+        host=os.getenv("DB_HOST","localhost"),
+        port=int(os.getenv("DB_PORT", "3306")),
+        user=os.getenv("DB_USER", "ROOT"),
+        password=os.getenv("DB_PASSWORD", ""),
+        database=os.environ["DB_NAME"],
         cursorclass=pymysql.cursors.DictCursor,
     )
 
