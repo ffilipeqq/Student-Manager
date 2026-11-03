@@ -2,7 +2,7 @@
 
 Used to manage students in a **SQL** database, and **display data** about courses onto a **dynamic** website.
 
-This was built using **Python**, **Flask**, **Git**, AND **MySQL**
+This was built using **Python**, **Flask**, **Git**, AND **MySQL**, as a small solo project in class.
 
 Includes a **login/logout system** using **sessions** and accounts - Features a **dashboard** page, **students list** page, **student editing**, and **student adding**.
 
@@ -21,5 +21,3 @@ Includes a **login/logout system** using **sessions** and accounts - Features a 
 
 ## Important
 - The MySQL database, tables, and local data are not included in this repository.
-- Set `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` before starting the app.
-- Set `FLASK_SECRET_KEY` to a secure, unique value. Do not commit passwords, secret keys, or `.env` files.
