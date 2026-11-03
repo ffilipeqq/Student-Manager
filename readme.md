@@ -26,7 +26,7 @@ Includes a **login/logout system** using **sessions** and accounts - Features a 
 ## Screenshots
 
 ### Dashboard
-![Student Management System dashboard](projectimg/Dashboard.png)
+![Student Management System dashboard](projectimg/dashboard-overview.png)
 
 ### Students
 ![Student Management System students page](projectimg/Students.png)
