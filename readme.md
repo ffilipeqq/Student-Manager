@@ -43,7 +43,7 @@ $packagingKey = .\.venv\Scripts\python.exe -c "import secrets; print(secrets.tok
 ```powershell
 $env:FLASK_SECRET_KEY = $packagingKey
 ```
-
+```powershell
 .\.venv\Scripts\python.exe -m flask --app app run
 ```
 
