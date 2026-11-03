@@ -52,6 +52,33 @@ $env:FLASK_SECRET_KEY = $packagingKey
 .\.venv\Scripts\python.exe -m flask --app app run
 ```
 
+## MySQL configuration
+Create the database and tables below in MySQL before starting the application.
+The `users.id` and `students.id` columns increment automatically.
+
+```sql
+CREATE DATABASE college_db;
+USE college_db;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin') NOT NULL DEFAULT 'user'
+);
+
+CREATE TABLE students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    course VARCHAR(255) NOT NULL
+);
+```
+
+Set `DB_USER` and `DB_PASSWORD` to a MySQL account that can access
+`college_db`. The application creates user password hashes when accounts are
+added through **Add User**.
+
 ## Login
 - Username: `admin`
 - Password: `tlevel`
