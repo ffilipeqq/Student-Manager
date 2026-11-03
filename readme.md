@@ -21,22 +21,27 @@ Includes a **login/logout system** using **sessions** and accounts - Features a 
 
 ## Powershell Commands
 ```powershell
-py -m venv .venv
+py -m venv .venv```
 
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt```
 
+```powershell
 $env:db_host = "localhost"
 $env:DB_PORT = "3306"
 $env:DB_NAME = "college_db"
 $env:DB_USER = "root"
-$env:DB_PASSWORD = ""
+$env:DB_PASSWORD = ""```
 
-$packagingKey = .\.venv\Scripts\python.exe -c "import secrets; print(secrets.token_hex(32))"
+```powershell
+$packagingKey = .\.venv\Scripts\python.exe -c "import secrets; print(secrets.token_hex(32))"```
 
-$env:FLASK_SECRET_KEY = $packagingKey
+```powershell
+$env:FLASK_SECRET_KEY = $packagingKey```
 
-.\.venv\Scripts\python.exe -m flask --app app run
-```
+```powershell
+.\.venv\Scripts\python.exe -m flask --app app run```
+
 
 
 ## Important
