@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Deployment Check</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        {#% include "_header.html" %#}
+        {% include "_flash_messages.html" %}
+
+        <h1>Deployment Check</h1>
+
+        <p>The Flask application can render this page.</p>
+        <p>This page does not test the MySQL connection.</p>
+
+    </body>
+</html>
