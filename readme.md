@@ -4,7 +4,9 @@ Used to manage students in a **SQL** database, and **display data** about course
 
 This was built using **Python**, **Flask**, **Git**, AND **MySQL**, as a small solo project in class.
 
-Includes a **login/logout system** using **sessions** and accounts - Features a **dashboard** page, **students list** page, **student editing**, and **student adding**.
+Includes a **login/logout system** using **sessions** and **accounts** - Features a **dashboard** page, **students list** page, **student editing**, and **student adding**.
+
+This web application features **RBAC**: **admins** have elevated edit permissions, and **users** have view permissions.
 
 User accounts are read from the MySQL `users` table with the columns `id`,
 `username`, `password`, and `role`. New passwords are stored as Werkzeug
@@ -96,7 +98,7 @@ additional accounts. The `id` column is generated automatically by MySQL.
 
 ## Screenshots
 
-*These screenshots are from an Admin account on the application hence the expanded permissions.*
+*These screenshots are from an Admin account on the web application hence the expanded permissions.*
 
 ### Dashboard
 ![Student Management System dashboard](projectimg/dashboard_overview.png)
