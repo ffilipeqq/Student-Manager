@@ -14,10 +14,10 @@ hashes, never as plain text. The existing admin account keeps its current
 password and is upgraded to a hash the first time it logs in.
 
 ## Requirements
-- Python 3.14
+- [Python 3.14](https://www.python.org/downloads/release/python-3140/)
 - A running MySQL server
 - The required Database and tables
-- Python packages in requirements.txt
+- Python packages in requirements.txt, installed with [pip](https://pip.pypa.io/en/stable/installation/)
 
 ## Setup
 1. Clone the repository and open its folder.
