@@ -21,7 +21,7 @@ password and is upgraded to a hash the first time it logs in.
 1. Clone the repository and open its folder.
 2. Create and activate a Python virtual environment.
 3. Install the dependencies with `pip install -r requirements.txt`.
-4. Create the MySQL database and required tables.
+4. Create the MySQL database and required tables referring to **MySQL configuration**.
 5. Set the environment variables referring to **Powershell Commands**, then run the app with `python app.py`.
 
 ### Powershell Commands
