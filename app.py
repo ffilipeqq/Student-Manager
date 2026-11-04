@@ -427,5 +427,9 @@ def dashboard():
                            max_count=max_count,
                            username = session["username"])
 
+@app.get("/deployment-check")
+def deployment_check():
+    return render_template("deployment_check.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
