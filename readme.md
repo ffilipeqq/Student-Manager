@@ -48,14 +48,17 @@ CREATE TABLE students (
 ```
 
 ### Powershell Commands
+Create a Python virtual environment:
 ```powershell
 py -m venv .venv
 ```
 
+Install the required packages:
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
+Set the database connection details:
 ```powershell
 $env:db_host = "localhost"
 $env:DB_PORT = "3306"
@@ -64,13 +67,13 @@ $env:DB_USER = "root"
 $env:DB_PASSWORD = ""
 ```
 
+Generate and set the Flask secret key:
 ```powershell
 $packagingKey = .\.venv\Scripts\python.exe -c "import secrets; print(secrets.token_hex(32))"
-```
-
-```powershell
 $env:FLASK_SECRET_KEY = $packagingKey
 ```
+
+Start the Flask application:
 ```powershell
 .\.venv\Scripts\python.exe -m flask --app app run
 ```
