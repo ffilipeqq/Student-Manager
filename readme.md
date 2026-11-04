@@ -96,6 +96,8 @@ additional accounts. The `id` column is generated automatically by MySQL.
 
 ## Screenshots
 
+*These screenshots are from an Admin account on the application hence the expanded permissions.*
+
 ### Dashboard
 ![Student Management System dashboard](projectimg/dashboard_overview.png)
 
