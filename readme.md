@@ -24,6 +24,29 @@ password and is upgraded to a hash the first time it logs in.
 4. Create the MySQL database and required tables referring to **MySQL configuration**.
 5. Set the environment variables referring to **Powershell Commands**, then run the app with `python app.py`.
 
+### MySQL configuration
+Create the database and tables below in MySQL before starting the application.
+The `users.id` and `students.id` columns increment automatically.
+
+```sql
+CREATE DATABASE college_db;
+USE college_db;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin') NOT NULL DEFAULT 'user'
+);
+
+CREATE TABLE students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    course VARCHAR(255) NOT NULL
+);
+```
+
 ### Powershell Commands
 ```powershell
 py -m venv .venv
@@ -50,29 +73,6 @@ $env:FLASK_SECRET_KEY = $packagingKey
 ```
 ```powershell
 .\.venv\Scripts\python.exe -m flask --app app run
-```
-
-### MySQL configuration
-Create the database and tables below in MySQL before starting the application.
-The `users.id` and `students.id` columns increment automatically.
-
-```sql
-CREATE DATABASE college_db;
-USE college_db;
-
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('user', 'admin') NOT NULL DEFAULT 'user'
-);
-
-CREATE TABLE students (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    course VARCHAR(255) NOT NULL
-);
 ```
 
 Set `DB_USER` and `DB_PASSWORD` to a MySQL account that can access
