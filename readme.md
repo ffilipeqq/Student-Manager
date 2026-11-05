@@ -1,8 +1,8 @@
 # Student Management System.
 
-Used to manage students in a **SQL** database, and **display data** about courses onto a **dynamic** website.
+Used to manage students in a **SQL** database and **display data** about courses in a **dynamic web application**.
 
-This was built using **Python**, **Flask**, **Git**, AND **MySQL**, as a small solo project in class.
+This was built using **Python**, **Flask**, **Git**, and **MySQL**, as a small solo project in class.
 
 Includes a **login/logout system** using **sessions** and **accounts** - Features a **dashboard** page, **students list** page, **student editing**, and **student adding**.
 
@@ -24,7 +24,7 @@ password and is upgraded to a hash the first time it logs in.
 2. Create and activate a Python virtual environment.
 3. Install the dependencies with `pip install -r requirements.txt`.
 4. Create the MySQL database and required tables referring to **MySQL configuration**.
-5. Set the environment variables referring to **Powershell Commands**, then run the app with `python app.py`.
+5. Set the environment variables referring to **PowerShell Commands**, then start the app with the Flask command shown below.
 
 ### MySQL configuration
 Create the database and tables below in MySQL before starting the application.
@@ -49,7 +49,7 @@ CREATE TABLE students (
 );
 ```
 
-### Powershell Commands
+### PowerShell Commands
 Create a Python virtual environment:
 ```powershell
 py -m venv .venv
@@ -68,6 +68,10 @@ $env:DB_NAME = "college_db"
 $env:DB_USER = "root"
 $env:DB_PASSWORD = ""
 ```
+
+The empty `DB_PASSWORD` value above is intended for local development only.
+For other environments, use a MySQL account with a password and do not store
+credentials directly in source-controlled files.
 
 Generate and set the Flask secret key:
 ```powershell
@@ -89,9 +93,8 @@ added through **Add User**.
 - Password: `tlevel`
 
 After logging in as an admin, use **Add User** in the navigation to create
-additional accounts. The `id` column is generated automatically by MySQL.
-
-
+additional accounts. These credentials are for local development; change the
+password before using the application in any other environment.
 
 ### Important
 - This project was created for practising Flask and front-end design skills; it is not production-ready and should not be considered secure.
