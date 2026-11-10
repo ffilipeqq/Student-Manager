@@ -5,6 +5,6 @@ services:
     image: student-manager:ci-lab
     build: .
     env_file:
-      - runetime.env
+      - runtime.env
     ports:
      - "127.0.0.1:8082:8000"
