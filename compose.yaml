@@ -1,0 +1,10 @@
+name: ca6-pipeline-lab
+
+services:
+  web:
+    image: student-manager:ci-lab
+    build: .
+    env_file:
+      - runetime.env
+    ports:
+     - "127.0.0.1:8082:8000"
