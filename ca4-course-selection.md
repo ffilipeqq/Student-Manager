@@ -10,3 +10,5 @@ Staff choose a course from an approved list in Add Student, that comes from an s
 - A listed course can be selected and saved
 - An invalid course selection is rejected
 - The Dashboard groups the record under the correct course
+
+-- 
